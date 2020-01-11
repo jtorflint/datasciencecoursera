@@ -1,0 +1,197 @@
+---
+title: "Notes for R Programing Course: Week 1"
+author: "JFlint"
+date: "1/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Module 1
+R is a language of S, a data science language. It is not ideal for all situations, but focuses on statistical analysis. 
+*Design of R* 
+the base of R system is downloaded from CRAN, and has a number of packages, such as base packages (grid, methods, tools) and Reccomended packages (knitter, party, ect). People can provide packages for downloads, however, they must follow particular outlines. 
+*classic texts in R* 
+- Chambers (2008). *Software for Data Analysis*, Springer.  
+- Chambers (1998). *Programing with Data*, Springer.  
+- Venables & Ripley (2002). *Modern Applied Statistics with S*, Springer.   
+- Venables & Ripley (2000). *S Programming*, Springer.  
+- Pinheiro & Bates (2000). *Mixed-Effects Models in S and S-Plus*, Springer.  
+- Murrel (2005). *R Graphics*, Chapman & Hall/CRC Press  
+- *Use R!* book series by Springer  
+- r-project.org/doc/bib/R-books.html  
+
+## **Input**
+
+At the R prompt, we type expressions. The '<-' symbol is the assignment operator. 
+```{r}
+x<- 5 ## identify the x
+print(x) ## print the x
+
+```
+
+```{r}
+x<- 1:20 ## itentify multiple values
+print(x)
+```
+
+## **objects and Attributes**
+R has five basic "atomic" classes of objects
+- Character  
+- numeric (real numbers)  
+- integer  
+- complex  
+- logical (true/false)   
+
+the most basic object is a vector. Vectors can only contain objects of the same class such as just numeric, just logical. The one exception is a *list*, in which different classes are represented, and the result is formated as a vector. 
+
+```{r}
+vector() ## creates an empty vector function. 
+```
+
+## **Numbers**
+numbers are treated as double precision real numbers. if you want to represent an integer, you need to specify with the L suffix. 
+```{r}
+x<- 2 ## number
+y<-2L ## integer 
+```
+Special numbers are 'Inf' = 0 and can be used as 0 in calcualtions. 
+"NaN" represents undefined number or a missing value. 
+
+## **Atributes**
+
+- names or dimension name  
+- dimensions (eg matracies, arrays)  
+- class  
+- length  
+- other user defined attributes or metadata; attributes can beaccessed using attributes() function   
+ 
+## **vectors and lists**
+c() creates functions 
+
+```{r}
+x<-c(0.5,0.6) ##numeric
+y<-c(TRUE,FALSE) ##logical
+z<-c(T,F) ##logical
+x<-c("a","b","c") ##char
+a<-9:29 ##intiger
+b<-c(1+0i, 2+4i) ##complex
+```
+```{r}
+x<-vector("numeric", length = 10)
+x
+```
+
+when different objects are mixed in a vector, *coercion* occurs so that every element in teh vector is the same class. 
+i.e.; enter in c(1.7, "a") it will be transformed into a character vector with 1.7 and "a" in it. 
+C(T, 2) will be transformed into a numeric in which T=1 (F=0)
+
+## **Explicit Coercion**
+Can use functions to force something into a new type. 
+```{r}
+x<- 0:6 ##automatically an integer function
+as.numeric(x) ## forces it to become a numeric funciton
+as.logical(x) ## forces it to logcal; 0= false, 0<true
+as.character(x) ##forces it to char; "0","1","2","3", ect
+```
+Coercion does not work always; forcing char to numaric will generate "NA" warning
+
+## **Lists**
+
+vector that contain elements of different classes. 
+```{r}
+x<-list(1,"a",T, 1+4i)
+print(x)
+```
+
+## **Matrices**
+vectors with a dimension attribute: int vector of length 2 (nrow, ncol)
+
+```{r}
+m<-matrix(nrow=2,ncol=3)
+print(m)
+n<-matrix(1:6, nrow=2, ncol=3)
+print(n)
+o<- 1:10 
+o
+dim(o)<- c(2,5)
+print(o)
+```
+
+Can also create matricies by binding columns or rows. 
+cbind or rbind 
+
+```{r}
+x<- 1:3
+y<-10:12
+cbind(x,y)
+```
+```{r}
+x<- 1:3
+y<-10:12
+rbind(x,y)
+```
+
+
+## **factors**
+a factor is a type of vector used to create categorical data. Two types of factor: unordered and ordered. 
+These data have lables that are categorical but have no ordering, for example, gender. There are also ordered factors, which are ranked; for example, assistant professor, associate professor, full professor, or High, medium, low. Charictors such as "male" "female" are sometimes more helpful than 1, 2, because we can identify them quicker without leaving coding notes. 
+```{r}
+x<- factor(c("yes","yes","no","yes","no"))
+print(x)
+table(x)
+unclass(x)
+attr("levels")
+```
+the order of levels can be set using levels argument ot factor(). this can be important in linear modeling as it is used as baseline level. 
+```{R}
+x<-factor(c("Yes","Yes", "No", "Yes","No"), levels =c("Yes", "No"))
+x
+```
+## **Missing Values**
+missing values are denoted by NA or NaN. NaN is specifically undefined mathmatical operations. NA is everything else. you can test by calling is.na() or is.nan() . NaN values can be Na, but not all NA values are NaN. 
+
+## **Data Frames**
+
+is used to store tabular data. special type of list where every element has the same length.i.e. each column is the same length, but might not be the same type. Unlike matrices. data frames have attributes: row.names, 
+can be created by calling read.table() or read.csv()
+can be converted to matrix by data.matrix()
+```{r}
+x<-data.frame(foo=1:4, bar=c(T,T,F,F))
+x
+nrow(x)
+ncol(x)
+```
+
+## **Data types: names attribute**
+
+R objects can also have names. this is true for all r objects, not only data frames 
+
+```{r}
+x<- 1:3 ## intiger 
+x
+names(x)
+names(x)<- c("foo", "bar", "norf")
+x
+names(x)
+```
+```{r}
+x<-list(a=1, b=2, c=3) ##list
+x
+```
+
+```{r}
+m<-matrix(1:4, nrow=2, ncol=2) ##matrix
+dimnames(m)<-list(c("a","b"),c("c","d"))
+m 
+```
+
+
+
+
+
+
+
+
