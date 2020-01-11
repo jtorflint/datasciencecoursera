@@ -143,7 +143,6 @@ x<- factor(c("yes","yes","no","yes","no"))
 print(x)
 table(x)
 unclass(x)
-attr("levels")
 ```
 the order of levels can be set using levels argument ot factor(). this can be important in linear modeling as it is used as baseline level. 
 ```{R}
