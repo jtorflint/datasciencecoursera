@@ -157,13 +157,13 @@ missing values are denoted by NA or NaN. NaN is specifically undefined mathmatic
 is used to store tabular data. special type of list where every element has the same length.i.e. each column is the same length, but might not be the same type. Unlike matrices. data frames have attributes: row.names, 
 can be created by calling read.table() or read.csv()
 can be converted to matrix by data.matrix()
+
 ```{r}
 x<-data.frame(foo=1:4, bar=c(T,T,F,F))
 x
 nrow(x)
 ncol(x)
 ```
-
 ## **Data types: names attribute**
 
 R objects can also have names. this is true for all r objects, not only data frames 
@@ -186,10 +186,33 @@ m<-matrix(1:4, nrow=2, ncol=2) ##matrix
 dimnames(m)<-list(c("a","b"),c("c","d"))
 m 
 ```
+## Reading Tabular Data 
 
+read data in r in a few differnet ways; 
+- read.table, read.csv for tabular data.   
+- readLines lets you read lines of text file. represents the text as charicters in r.  
+- source, for reading R code files, invesres of dump.   
+- dget for reading in R code files, inverse of dput. this is for reading r objects that have been deparsed into binary files.   
+- load for reading in saved workplaces  
+- unserialize for reading single r object in binary form.   
+Write data by:
+- write.table  
+- writeLines  
+- dump  
+- dput  
+- save  
+- serialize  
 
-
-
+The most common way to read data is usinng read.table and has a few important arguments. 
+- file; the name of a file or a connection  
+- header, logical indicating if the file has a header line  
+- sep, a string indicating how the columns are seperated: if you have a file seperated by tabs, commas, semicolins, they are set here.  
+- colClasses, a charicter vector indicating the class of each column in the dataset.  
+- nrows, the number of rows in the dataset.   
+- comment.char, charicter string indicating the comment character.   
+- skip, the number of linnes to skip from the begining, if you have header data   
+- stringsAsFactors, should character variables be coded as factors? this defaults as true, which means that anything that looks like a character variable becomes a factor  
+for small and moderate sized data sets, you can usually call read.table whitout specifying any other arguments. This is because R will automatically skip lines that begin with #, figure out how many rows there are, and how much memory needs to be allocated. read.csv is identical to read.table, except that .csv defaults to recognizing a comma as the default separator. Telling R what type of variable is in each column in a table will make R run faster and more efficiently.  
 
 
 
